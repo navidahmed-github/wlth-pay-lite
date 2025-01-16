@@ -5,6 +5,7 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
+import Home from "./pages/Home";
 
 const App = () => {
   const [user, loading] = useAuthState(auth);
@@ -32,8 +33,7 @@ const App = () => {
             </ProtectedRoutes>
           }
         />
-        <Route path="/" element={<Navigate to="/login" />} />
-      </Routes>
+        <Route path="/" element={<Home />} />      </Routes>
     </Router>
   );
 };

@@ -59,6 +59,11 @@ const Login = () => {
             Sign Up
           </Link>
         </p>
+        <p style={{ textAlign: "center", marginTop: "1rem" }}>
+          <Link to="/" className="form-link">
+            Go to Home
+          </Link>
+        </p>
       </form>
     </div>
   );

@@ -22,7 +22,7 @@ const Signup = () => {
   return (
     <div className="signup-container">
       <form className="form" onSubmit={handleSignup}>
-        <h2 className="form-title">Signup</h2>
+        <h2 className="form-title">Sign Up</h2>
         <div className="form-group">
           <label className="form-label" htmlFor="email">
             Email
@@ -51,13 +51,18 @@ const Signup = () => {
         </div>
         {error && <p className="form-error">{error}</p>}
         <button type="submit" className="form-button">
-          Signup
+          Sign Up
         </button>
         <p style={{ textAlign: "center", marginTop: "1rem" }}>
           Already have an account?{" "}
           <Link to="/login" className="form-link">
             Login
           </Link>
+        </p>
+        <p style={{ textAlign: "center", marginTop: "1rem" }}>
+            <Link to="/" className="form-link">
+                Go to Home
+            </Link>
         </p>
       </form>
     </div>
