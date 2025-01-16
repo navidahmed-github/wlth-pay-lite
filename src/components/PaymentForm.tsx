@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 
 interface PaymentFormProps {
-  onAddTransaction: (transaction: { recipient: string; amount: number; method: string }) => void;
+  onAddTransaction: (transaction: {
+    id: string;
+    recipient: string;
+    amount: number;
+    method: string;
+    date: string;
+  }) => void;
 }
 
 const PaymentForm: React.FC<PaymentFormProps> = ({ onAddTransaction }) => {
@@ -28,9 +34,11 @@ const PaymentForm: React.FC<PaymentFormProps> = ({ onAddTransaction }) => {
     if (!validateForm()) return;
 
     onAddTransaction({
+      id: crypto.randomUUID(), // Generate a unique ID
       recipient,
       amount: parseFloat(amount),
       method,
+      date: new Date().toISOString(), // Add current date
     });
 
     // Clear form fields
