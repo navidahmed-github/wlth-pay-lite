@@ -5,6 +5,8 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "Transactions";
 const TOKEN = process.env.AUTH_TOKEN;
 
+console.log("Loaded AUTH_TOKEN:", TOKEN);
+
 exports.handler = async (event) => {
   const { httpMethod, body, headers } = event;
 
