@@ -111,13 +111,10 @@ This project represents a functional demonstration of my readiness to take owner
 - `utils/validateToken.js`: Handles Firebase token validation.
 - `template.yml`: SAM template for defining Lambda resources.
 
-## Known Issues
-- **CORS errors**: Ensure API Gateway has appropriate CORS headers.
-- **Large artifacts**: AWS Lambda has a 50MB size limit for direct uploads; use S3 for larger deployments.
 
 ## Future Enhancements
 1. Improve token management by implementing automatic token refreshing.
-2. Add support for multi-region deployments.
+2. Add support for analytical finanical tracking
 3. Enhance frontend with better error handling and user feedback.
 
 ## Acknowledgments
