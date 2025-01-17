@@ -3,11 +3,17 @@ const AWS = require("aws-sdk");
 AWS.config.update({ region: "us-east-1" });
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = "Transactions";
+const TOKEN = process.env.AUTH_TOKEN;
 
 exports.handler = async (event) => {
-  const { httpMethod, body } = event;
+  const { httpMethod, body, headers } = event;
 
   try {
+    // Check if the Authorization header is valid
+    if (!headers || headers.Authorization !== `Bearer ${TOKEN}`) {
+      return unauthorizedResponse("Invalid or missing Authorization token");
+    }
+
     switch (httpMethod) {
       case "GET":
         return await handleGetRequest();
@@ -80,11 +86,17 @@ const handlePostRequest = async (body) => {
 const responseHeaders = () => ({
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "OPTIONS, GET, POST",
-  "Access-Control-Allow-Headers": "Content-Type",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
 });
 
 const badRequestResponse = (message) => ({
   statusCode: 400,
+  headers: responseHeaders(),
+  body: JSON.stringify({ error: message }),
+});
+
+const unauthorizedResponse = (message) => ({
+  statusCode: 401,
   headers: responseHeaders(),
   body: JSON.stringify({ error: message }),
 });
