@@ -1,0 +1,48 @@
+Resources:
+  TransactionsHandler:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs18.x
+      CodeUri: TransactionsHandler
+      Environment:
+        Variables:
+          SECRET_BEARER_TOKEN: '{{resolve:secretsmanager:wlth-pay-lite:SecretString:SECRET_BEARER_TOKEN}}'
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      - Statement:
+        - Effect: Allow
+          Action:
+          - dynamodb:Scan
+          - dynamodb:PutItem
+          Resource: arn:aws:dynamodb:us-east-1:796973521254:table/Transactions
+      Timeout: 10
+      MemorySize: 128
+      AutoPublishAlias: live
+      DeploymentPreference:
+        Enabled: true
+        Type: AllAtOnce
+        Alarms:
+        - Ref: TransactionsHandlerAlarm
+    Metadata:
+      SamResourceId: TransactionsHandler
+  TransactionsHandlerAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Alarm for monitoring deployment of TransactionsHandler
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      AlarmActions:
+      - Fn::Sub: arn:aws:sns:${AWS::Region}:${AWS::AccountId}:TransactionsHandlerNotification
+Outputs:
+  TransactionsHandlerFunctionArn:
+    Description: ARN of the Lambda function
+    Value:
+      Fn::GetAtt:
+      - TransactionsHandler
+      - Arn

@@ -1,0 +1,16 @@
+{
+  "name": "wlth-pay-lite-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "firebase-admin": "^13.0.2"
+  }
+}
