@@ -15,5 +15,3 @@ const app = initializeApp(firebaseConfig);
 
 // Export authentication
 export const auth = getAuth(app);
-
-auth.currentUser.getIdToken().then((token) => console.log(token));
