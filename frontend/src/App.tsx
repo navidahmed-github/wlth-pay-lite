@@ -6,12 +6,19 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
 import Home from "./pages/Home";
+import LoadingSpinner from "../src/components/LoadingSpinner"; // Add a new component for better styling
+import React from "react";
 
 const App = () => {
   const [user, loading] = useAuthState(auth);
 
   if (loading) {
-    return <div>Loading...</div>;
+    // Display a styled loading spinner
+    return (
+      <div className="loading-container">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (
@@ -33,7 +40,8 @@ const App = () => {
             </ProtectedRoutes>
           }
         />
-        <Route path="/" element={<Home />} />      </Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </Router>
   );
 };

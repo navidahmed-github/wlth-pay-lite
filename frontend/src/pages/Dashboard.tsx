@@ -14,6 +14,7 @@ interface Transaction {
 const Dashboard: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true); // Add a loading state
   const navigate = useNavigate();
 
   const API_URL = process.env.REACT_APP_API_BASE_URL || "";
@@ -48,6 +49,8 @@ const Dashboard: React.FC = () => {
       } catch (err) {
         console.error("Error fetching transactions:", err);
         setError("Error fetching transactions");
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
 
@@ -96,31 +99,37 @@ const Dashboard: React.FC = () => {
         <div className="dashboard-section bg-white p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold text-primary mb-4">Transaction History</h2>
           {error && <p className="text-red-600 mb-4">{error}</p>}
-          <table className="w-full border-collapse border border-gray-300">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border border-gray-300 p-2 text-left">Recipient</th>
-                <th className="border border-gray-300 p-2 text-left">Amount</th>
-                <th className="border border-gray-300 p-2 text-left">Method</th>
-                <th className="border border-gray-300 p-2 text-left">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transactions.map((transaction, index) => (
-                <tr
-                  key={transaction.id}
-                  className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-                >
-                  <td className="border border-gray-300 p-2">{transaction.recipient}</td>
-                  <td className="border border-gray-300 p-2">{transaction.amount}</td>
-                  <td className="border border-gray-300 p-2">{transaction.method}</td>
-                  <td className="border border-gray-300 p-2">
-                    {new Date(transaction.date).toLocaleString()}
-                  </td>
+          {loading ? (
+            <div className="flex justify-center items-center min-h-[200px]">
+              <div className="spinner border-t-4 border-b-4 border-primary rounded-full w-12 h-12 animate-spin"></div>
+            </div>
+          ) : (
+            <table className="w-full border-collapse border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 p-2 text-left">Recipient</th>
+                  <th className="border border-gray-300 p-2 text-left">Amount</th>
+                  <th className="border border-gray-300 p-2 text-left">Method</th>
+                  <th className="border border-gray-300 p-2 text-left">Date</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {transactions.map((transaction, index) => (
+                  <tr
+                    key={transaction.id}
+                    className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+                  >
+                    <td className="border border-gray-300 p-2">{transaction.recipient}</td>
+                    <td className="border border-gray-300 p-2">{transaction.amount}</td>
+                    <td className="border border-gray-300 p-2">{transaction.method}</td>
+                    <td className="border border-gray-300 p-2">
+                      {new Date(transaction.date).toLocaleString()}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
